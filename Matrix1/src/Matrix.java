@@ -46,9 +46,9 @@ public class Matrix {
     }
 
     void set(int r, int c, double value){
-        rows = r;
-        cols = c;
-        data[r*c] = value;
+        this.rows = r;
+        this.cols = c;
+        this.data[r*c] = value;
     }
 
     public String toString(){
@@ -70,7 +70,10 @@ public class Matrix {
 
     }
 
-    //int[] shape(){}
+    int[] shape(){
+        int[] size = {rows,cols};
+        return size;
+    }
 
     Matrix add(Matrix m){
         Matrix sum = new Matrix(rows, cols);

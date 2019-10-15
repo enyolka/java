@@ -101,6 +101,32 @@ public class Matrix {
         return sum;
     }
 
+    Matrix mul(Matrix m){
+        Matrix sum = new Matrix(rows, cols);
+        if(cols != m.cols  || rows != m.rows)
+            throw new RuntimeException("Wrong matrix size");
+        else{
+            for(int i = 0; i < rows; i++)
+                for(int j = 0; j < cols; j++)
+                    sum.data[i*cols+j] = data[i*cols+j] * m.data[i*cols+j];
+        }
+
+        return sum;
+    }
+
+    Matrix div(Matrix m){
+        Matrix sum = new Matrix(rows, cols);
+        if(cols != m.cols  || rows != m.rows)
+            throw new RuntimeException("Wrong matrix size");
+        else{
+            for(int i = 0; i < rows; i++)
+                for(int j = 0; j < cols; j++)
+                    sum.data[i*cols+j] = data[i*cols+j] / m.data[i*cols+j];
+        }
+
+        return sum;
+    }
+
     Matrix add(double w){
         Matrix sum = new Matrix(rows, cols);
         for(int i = 0; i < rows; i++) {
@@ -124,6 +150,15 @@ public class Matrix {
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++)
                 sum.data[i * cols + j] = data[i * cols + j] * w;
+        }
+        return sum;
+    }
+
+    Matrix div(double w){
+        Matrix sum = new Matrix(rows, cols);
+        for(int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++)
+                sum.data[i * cols + j] = data[i * cols + j] / w;
         }
         return sum;
     }

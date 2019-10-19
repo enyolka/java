@@ -16,15 +16,20 @@ public class Matrix {
             if (d[i].length > longest)
                 longest = d[i].length;
         }
-        data = new double[longest*d.length];
 
-        for(int i = 0; i < d.length; i++){
-            for(int j = 0; j < d[i].length; j++){
-                data[i*cols+j] = d[i][j];
+        this.rows = d.length;
+        this.cols = longest;
+        data = new double[rows*cols];
+
+        for(int i = 0; i < d.length; i++) {
+            for (int j = 0; j < d[i].length; j++) {
+                data[i * rows + j] = d[i][j];
             }
             int j = d[i].length;
-            while(j<longest)
-                data[i*cols+j] = 0;
+            while (j < longest) {
+                data[i * rows + j] = 0;
+                j++;
+            }
         }
     }
 
@@ -40,13 +45,13 @@ public class Matrix {
     }
 
     double get(int r, int c){
-        return data[r*c];
+        return data[(r-1)*this.rows+(c-1)];
     }
 
     void set(int r, int c, double value){
         this.rows = r;
         this.cols = c;
-        this.data[r*c] = value;
+        this.data[(r-1)*this.rows+(c-1)] = value;
     }
 
     public String toString(){
@@ -55,7 +60,7 @@ public class Matrix {
         for(int i = 0;i < rows ; i++){
             buf.append("[");
             for(int j = 0; j < cols; j++)
-                buf.append(String.format("%f", data[i*cols + j]));
+                buf.append(String.format(" %f ", data[i*rows + j]));
             buf.append("]\n");
         }
         buf.append("]");
@@ -82,7 +87,7 @@ public class Matrix {
         else{
             for(int i = 0; i < rows; i++)
                 for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] + m.data[i*cols+j];
+                    sum.data[i*rows+j] = data[i*rows+j] + m.data[i*rows+j];
         }
         return sum;
     }
@@ -94,7 +99,7 @@ public class Matrix {
         else{
             for(int i = 0; i < rows; i++)
                 for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] - m.data[i*cols+j];
+                    sum.data[i*rows+j] = data[i*rows+j] + m.data[i*rows+j];;
         }
         return sum;
     }
@@ -106,7 +111,7 @@ public class Matrix {
         else{
             for(int i = 0; i < rows; i++)
                 for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] * m.data[i*cols+j];
+                    sum.data[i*rows+j] = data[i*rows+j] + m.data[i*rows+j];;
         }
         return sum;
     }
@@ -118,7 +123,7 @@ public class Matrix {
         else{
             for(int i = 0; i < rows; i++)
                 for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] / m.data[i*cols+j];
+                    sum.data[i*rows+j] = data[i*rows+j] + m.data[i*rows+j];;
         }
         return sum;
     }
@@ -127,7 +132,7 @@ public class Matrix {
         Matrix sum = new Matrix(rows, cols);
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] + w;
+                sum.data[i * rows + j] = data[i * rows + j] + w;
         }
         return sum;
     }
@@ -145,7 +150,7 @@ public class Matrix {
         Matrix sum = new Matrix(rows, cols);
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] * w;
+                sum.data[i * rows + j] = data[i * rows + j] * w;
         }
         return sum;
     }
@@ -154,7 +159,7 @@ public class Matrix {
         Matrix sum = new Matrix(rows, cols);
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] / w;
+                sum.data[i * rows + j] = data[i * rows + j] / w;
         }
         return sum;
     }
@@ -166,7 +171,7 @@ public class Matrix {
             for(int i=0; i<rows; i++)
                 for(int j=0; j<cols; j++)
                     for(int k=0; k<cols; k++)
-                        sum.data[i*cols+j] = data[i*cols+k] * m.data[k*cols+j];
+                        sum.data[i*rows+j] = data[i*rows+k] * m.data[k*rows+j];
         }
         return sum;
     }
@@ -175,14 +180,30 @@ public class Matrix {
         double a = 0;
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++)
-                a += (data[i*cols+j])* (data[i*cols+j]);
+                a += (data[i*rows+j])* (data[i*rows+j]);
         return a;
     }
 
     public static void main(String[] args) {
-        double[][]  d = {{2,2},{3,4}};
-        Matrix m = new Matrix(5,5);
-        System.out.println(m);
+
+        double[][] a = {{2,3},{1,4}};
+        Matrix m = new Matrix(2,2);
+        Matrix n = new Matrix(2,2);
+        Matrix k = new Matrix(a);
+
+        m.set(1,1,2);
+        m.set(1,2,3);
+        m.set(2,1,4);
+        m.set(2,2,3);
+
+        n.set(1,1,1);
+        n.set(1,2,3);
+        n.set(2,1,0);
+        n.set(2,2,2);
+
+        System.out.println(m.add(n));
+
     }
 
 }
+

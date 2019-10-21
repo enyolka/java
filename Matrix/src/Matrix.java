@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Matrix {
     double[]data;
     int rows;
@@ -38,29 +40,26 @@ public class Matrix {
         int x=0;
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++) {
-                d[i][j] = this.data[j];
-                x++;
+                d[i][j] = this.data[i*cols+j];
             }
         return d;
     }
 
     double get(int r, int c){
-        return data[(r-1)*this.rows+(c-1)];
+        return data[r*rows+c];
     }
 
     void set(int r, int c, double value){
-        this.rows = r;
-        this.cols = c;
-        this.data[(r-1)*this.rows+(c-1)] = value;
+        data[r*rows+c] = value;
     }
 
     public String toString(){
         StringBuilder buf = new StringBuilder();
-        buf.append("[");
+        buf.append("[\n");
         for(int i = 0;i < rows ; i++){
             buf.append("[");
             for(int j = 0; j < cols; j++)
-                buf.append(String.format(" %f ", data[i*rows + j]));
+                buf.append(String.format(" %.2f ", data[i*rows + j]));
             buf.append("]\n");
         }
         buf.append("]");
@@ -184,22 +183,42 @@ public class Matrix {
         return a;
     }
 
+    public static Matrix random(int rows, int cols){
+        Matrix m = new Matrix(rows,cols);
+        Random r = new Random();
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < cols; j++)
+                m.set(i,j,r.nextDouble()*10);
+
+        return m;
+    }
+
+    public static Matrix eye(int n){
+        Matrix m = new Matrix(n,n);
+        for(int i = 0; i<n; i++) {
+            m.set(i, i, 1);
+        }
+        return m;
+    }
+
     public static void main(String[] args) {
 
-        double[][] a = {{2,3},{1,4}};
-        Matrix m = new Matrix(2,2);
-        Matrix n = new Matrix(2,2);
-        Matrix k = new Matrix(a);
+        //double[][] a = {{2,3},{1,4}};
+        Matrix m = new Matrix(3,3);
+        Matrix n = new Matrix(3,3);
+        Matrix k = Matrix.random(2,3);
 
-        m.set(1,1,2);
-        m.set(1,2,3);
-        m.set(2,1,4);
-        m.set(2,2,3);
+        m.set(0,0,2);
+        m.set(0,1,3);
+        m.set(1,1,4);
+        m.set(1,0,3);
 
-        n.set(1,1,1);
-        n.set(1,2,3);
-        n.set(2,1,0);
-        n.set(2,2,2);
+        n.set(0,0,1);
+        n.set(1,1,3);
+        n.set(0,1,0);
+        n.set(1,0,2);
+
+        System.out.println(k);
 
         System.out.println(m.add(n));
 

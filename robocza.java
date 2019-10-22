@@ -76,8 +76,11 @@ public class MatrixTest {
         }
     }
 
-    @org.junit.Test
+
+    @org.junit.Test(expected = RuntimeException.class)
     public void reshape() {
+        Matrix t = new Matrix(2,3);
+        t.reshape(4,2);
     }
 
     @org.junit.Test

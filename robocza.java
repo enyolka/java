@@ -1,184 +1,137 @@
-public class Matrix {
-    double[]data;
-    int rows;
-    int cols;
+import org.junit.Before;
 
-    Matrix(int rows, int cols){
-        this.rows = rows;
-        this.cols = cols;
-        data = new double[rows*cols];
+import static org.junit.Assert.*;
+
+public class MatrixTest {
+
+  /*  @org.junit.Before
+    public void setUp(){
+        Matrix t = new Matrix(new double[][] {{1,4,6},{2,3,7},{1,3,3}});
+    }*/
+
+    @org.junit.Test
+    public void testMatrix(){
+        Matrix t = new Matrix(2,3);
+        assertEquals(2,t.rows);
+        assertEquals(3,t.cols);
     }
 
-    Matrix(double[][] d){
-        int longest = 0;
-        for(int i = 0; i < d.length; i++) {
-            if (d[i].length > longest)
-                longest = d[i].length;
-        }
-        data = new double[longest*d.length];
+     @org.junit.Test
+    public void testMatrix2(){
+        Matrix t = new Matrix(new double[][] {{1,4,6},{1,2},{7}});
+        double[][] n = t.asArray();
 
-        for(int i = 0; i < d.length; i++){
-            for(int j = 0; j < d[i].length; j++){
-                data[i*cols+j] = d[i][j];
+        assertEquals(3,n.length);
+        for(int i=0; i<3; i++)
+            assertEquals(3,n[i].length);
+
+        for(int i=0; i<3; i++)
+            for(int j=0; j<i; j--) //??????????
+                assertEquals(0,n[i][j], 0.0001);
+    }
+
+    @org.junit.Test
+    public void asArray() {
+        Matrix t = new Matrix(new double[][] {{1,4,6},{2,3,7}});
+        double[][] tab = t.asArray();
+        assertEquals(2, tab.length);
+        assertEquals(3, tab[0].length);
+        assertEquals(3, tab[1].length);
+    }
+
+    @org.junit.Test
+    public void get() {
+        Matrix t = new Matrix(new double[][] {{1,4,6},{2,3,7}});
+        assertEquals(4,t.get(0,1), 0.0001);
+    }
+
+    @org.junit.Test
+    public void set() {
+        Matrix t = new Matrix(2,3);
+        t.set(0,0,1);
+        assertEquals(1,t.get(0,0), 0.00001);
+    }
+
+    @org.junit.Test
+    public void testToString() {
+        String s= "[[1.0,2.3,4.56], [12.3,  45, 21.8]]";
+        s= s.replaceAll("(\\[|\\]|\\s)+","");
+        String[] t = s.split("(,)+");
+        for(String x:t){
+            System.out.println(String.format("\'%s\'",x ));
+        }
+
+        double[]d=new double[t.length];
+        for(int i=0;i<t.length;i++) {
+            d[i] = Double.parseDouble(t[i]);
+        }
+
+        double arr[][]=new double[1][];
+        arr[0]=d;
+
+        for(int i=0;i<arr.length;i++){
+            for(int j=0;j<arr[i].length;j++){
+                System.out.println(arr[i][j]);
             }
-            int j = d[i].length;
-            while(j<longest)
-                data[i*cols+j] = 0;
         }
-
-    }
-
-    double[][] asArray(){
-        double[][] d = new double[rows][cols];
-        int x=0;
-        for(int i = 0; i < rows; i++)
-            for(int j = 0; j < cols; j++) {
-                d[i][j] = this.data[j];
-                x++;
-            }
-        return d;
-    }
-
-    double get(int r, int c){
-        return data[r*c];
-    }
-
-    void set(int r, int c, double value){
-        this.rows = r;
-        this.cols = c;
-        this.data[r*c] = value;
-    }
-
-    public String toString(){
-        StringBuilder buf = new StringBuilder();
-        buf.append("[");
-        for(int i = 0;i < rows ; i++){
-            buf.append("[");
-            for(int j = 0; j < cols; j++)
-                buf.append(String.format("%f", data[i*cols + j]));
-                buf.append("]\n");
-        }
-        buf.append("]");
-        return buf.toString();
-    }
-
-    void reshape(int newRows,int newCols){
-        if(rows*cols != newRows*newCols)
-            throw new RuntimeException(String.format("%d x %d matrix can't be reshaped to %d x %d",rows,cols,newRows,newCols));
-
-        this.rows = newRows;
-        this.cols = newCols;
-    }
-
-    int[] shape(){
-        int[] size = {rows,cols};
-        return size;
-    }
-
-    Matrix add(Matrix m){
-        Matrix sum = new Matrix(rows, cols);
-        if(cols != m.cols  || rows != m.rows)
-            throw new RuntimeException("Wrong matrix size");
-        else{
-            for(int i = 0; i < rows; i++)
-                for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] + m.data[i*cols+j];
-        }
-
-        return sum;
-    }
-
-    Matrix sub(Matrix m){
-        Matrix sum = new Matrix(rows, cols);
-        if(cols != m.cols  || rows != m.rows)
-            throw new RuntimeException("Wrong matrix size");
-        else{
-            for(int i = 0; i < rows; i++)
-                for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] - m.data[i*cols+j];
-        }
-
-        return sum;
-    }
-
-    Matrix mul(Matrix m){
-        Matrix sum = new Matrix(rows, cols);
-        if(cols != m.cols  || rows != m.rows)
-            throw new RuntimeException("Wrong matrix size");
-        else{
-            for(int i = 0; i < rows; i++)
-                for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] * m.data[i*cols+j];
-        }
-
-        return sum;
-    }
-
-    Matrix div(Matrix m){
-        Matrix sum = new Matrix(rows, cols);
-        if(cols != m.cols  || rows != m.rows)
-            throw new RuntimeException("Wrong matrix size");
-        else{
-            for(int i = 0; i < rows; i++)
-                for(int j = 0; j < cols; j++)
-                    sum.data[i*cols+j] = data[i*cols+j] / m.data[i*cols+j];
-        }
-
-        return sum;
-    }
-
-    Matrix add(double w){
-        Matrix sum = new Matrix(rows, cols);
-        for(int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] + w;
-        }
-        return sum;
-    }
-
-    Matrix sub(double w){
-        Matrix sum = new Matrix(rows, cols);
-        for(int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] - w;
-        }
-        return sum;
-    }
-
-    Matrix mul(double w){
-        Matrix sum = new Matrix(rows, cols);
-        for(int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] * w;
-        }
-        return sum;
-    }
-
-    Matrix div(double w){
-        Matrix sum = new Matrix(rows, cols);
-        for(int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++)
-                sum.data[i * cols + j] = data[i * cols + j] / w;
-        }
-        return sum;
     }
 
 
-    Matrix dot(Matrix m){
-        Matrix sum = new Matrix(rows, cols);
-        if(cols == m.rows){
-            for(int i=0; i<rows; i++)
-                for(int j=0; j<cols; j++)
-                    for(int k=0; k<cols; k++)
-                        sum.data[i*cols+j] = data[i*cols+k] * m.data[k*cols+j];
-        }
-        return sum;
+    @org.junit.Test(expected = RuntimeException.class)
+    public void reshape() {
+        Matrix t = new Matrix(2,3);
+        t.reshape(4,2);
     }
 
-    public static void main(String[] args) {
-        double[][]  d = {{2,2},{3,4}};
-        Matrix m = new Matrix(5,5);
-        System.out.println(m);
+    @org.junit.Test
+    public void shape() {
     }
 
+    @org.junit.Test
+    public void add() {
+    }
+
+    @org.junit.Test
+    public void sub() {
+    }
+
+    @org.junit.Test
+    public void mul() {
+    }
+
+    @org.junit.Test
+    public void div() {
+    }
+
+    @org.junit.Test
+    public void testAdd() {
+    }
+
+    @org.junit.Test
+    public void testSub() {
+    }
+
+    @org.junit.Test
+    public void testMul() {
+    }
+
+    @org.junit.Test
+    public void testDiv() {
+    }
+
+    @org.junit.Test
+    public void dot() {
+    }
+
+    @org.junit.Test
+    public void frobenius() {
+    }
+
+    @org.junit.Test
+    public void random() {
+    }
+
+    @org.junit.Test
+    public void eye() {
+    }
 }

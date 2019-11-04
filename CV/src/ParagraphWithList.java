@@ -21,6 +21,12 @@ public class ParagraphWithList extends Paragraph {
         return this;
     }
 
+    ParagraphWithList addItemToList(String i){
+        ListItem n = new ListItem(i);
+        this.list.addItem(n);
+        return this;
+    }
+
     @Override
     void writeHTML(PrintStream out) {
         super.writeHTML(out);

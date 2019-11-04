@@ -7,7 +7,7 @@ public class Paragraph {
         this.content = "";
     }
 
-    Paragraph(String constent){
+    Paragraph(String content){
         this.content = content;
     }
 

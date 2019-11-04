@@ -8,6 +8,6 @@ public class ListItem {
     }
 
     void writeHTML(PrintStream out){
-        out.println("<li>" + this.content + "</li");
+        out.println("<li>" + this.content + "</li>");
     }
 }

@@ -26,7 +26,7 @@ public class Section {
     }
 
     void writeHTML(PrintStream out){
-        out.println("<h2>" + this.title + "</p>");
+        out.println("<h2>" + this.title + "</h2>");
         for(Paragraph p: paragraphs)
             p.writeHTML(out);
     }

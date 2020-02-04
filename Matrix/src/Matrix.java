@@ -1,3 +1,5 @@
+// Kartkówka - linia 78
+
 import java.util.Random;
 
 public class Matrix {
@@ -72,6 +74,20 @@ public class Matrix {
         buf.append("]");
         return buf.toString();
     }
+
+    // *** KARTKÓWKA ***
+    Matrix sumRows(){
+        Matrix result = new Matrix(1, this.cols);
+
+        for(int i=0; i<this.cols; i++) {
+            double sum = 0;
+            for (int j = 0; j < this.rows; j++)
+                sum += this.data[j*rows+i];;
+            result.data[i] = sum;
+        }
+        return result;
+    }
+
 
     void reshape(int newRows, int newCols) {
         if (rows * cols != newRows * newCols)
@@ -272,11 +288,15 @@ public class Matrix {
     public static void main(String[] args) {
 
         //double[][] a = {{2,3},{1,4}};
-        Matrix m = new Matrix(3, 3);
+       /*Matrix m = new Matrix(3, 3);
         Matrix n = new Matrix(3, 3);
         Matrix k = Matrix.random(2, 3);
         Matrix t = new Matrix(new double[][] {{1,2,3,6},{5,6,7,8}, {9,11,11,12}, {13,14,15,16}});
-
+*/
+        Matrix m = new Matrix(new double[][]{{1,2,3},{4,5,6},{7,8,9}});
+        Matrix row = m.sumRows();
+        System.out.println(row);
+        /*
         m.set(0, 0, 2);
         m.set(0, 1, 3);
         m.set(1, 1, 4);
@@ -287,10 +307,9 @@ public class Matrix {
         n.set(0, 1, 0);
         n.set(1, 0, 2);
 
-       // System.out.println(k);
 
         //System.out.println(m.add(n));
-        System.out.println(t.determinant());
+        System.out.println(t.determinant());*/
 
     }
 }

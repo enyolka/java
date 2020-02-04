@@ -2,6 +2,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Document {
     String title;
     Photo photo;
@@ -26,14 +27,10 @@ public class Document {
         this.sections.add(section);
         return section;
     }
+
     Document addSection(Section s){
         this.sections.add(s);
         return this;
-    }
-
-    public void addPhoto(String s) {
-        Photo new_photo = new Photo(s);
-        this.photo = new_photo;
     }
 
     void writeHTML(PrintStream out){
@@ -44,12 +41,15 @@ public class Document {
                 "<meta name = \"keywords\" content = \"osoba, wyszkatlcenie\" /> \n" +
                 "<meta http-equiv = \"X-UA-Compatible\" content = \"IE=edge,chrome=1\"/\">\n" +
                 "</head> \n\n <body> \n");
-        out.printf("<h1> %s </h1>\n", title);
+        out.printf("<h1> %s </h1>", title);
         photo.writeHTML(out);
         for(Section s: sections)
             s.writeHTML(out);
         out.printf("\n</body> \n </html>");
     }
 
-
+    public void addPhoto(String s) {
+        Photo new_photo = new Photo(s);
+        this.photo = new_photo;
+    }
 }

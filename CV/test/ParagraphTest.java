@@ -27,7 +27,5 @@ public class ParagraphTest {
         assertTrue(result.contains("<p>"));
         assertTrue(result.contains("</p>"));
         assertTrue(result.contains(content));
-
     }
-
 }

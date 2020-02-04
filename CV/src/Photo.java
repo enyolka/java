@@ -8,6 +8,6 @@ public class Photo {
     }
 
     void writeHTML(PrintStream out){
-        out.printf("<img src=\"%s\" alt=\"Smiley face\" height=\"100\" width=\"100\"/>\n",url);
+        out.printf("<img src=\"%s\" alt=\"Smiley face\" height=\"42\" width=\"42\"/>\n",url);
     }
 }

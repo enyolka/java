@@ -16,7 +16,7 @@ public class Paragraph {
         return this;
     }
 
-     void writeHTML(PrintStream out){
+    void writeHTML(PrintStream out){
         out.println("<p>" + this.content + "</p>");
     }
 

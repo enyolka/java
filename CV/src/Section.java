@@ -9,6 +9,7 @@ public class Section {
     Section(String title){
         this.title = title;
     }
+    Section(){ this.title = ""; }
 
     Section setTitle(String title){
         this.title = title;

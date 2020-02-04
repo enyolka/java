@@ -80,15 +80,22 @@ public class Prod extends Node {
         return false;
     }
 
-    // ???
-    boolean simplify(String s){
-        if(s.equals("1")) return true;
-        return false;
+    Constant simplify(){
+        Constant sum = new Constant(1);
+        for(Node n: args){
+            if(!(n instanceof Constant))
+                continue;
+            else{
+                sum.value = sum.value * ((Constant) n).value;
+                if(n.getSign()<0) sum.value = sum.value * (-1);
+            }
+        }
+        return sum;
     }
 
     public String toString(){
         StringBuilder b =  new StringBuilder();
-        //StringJoiner joiner = new StringJoiner("*");
+        StringJoiner joiner = new StringJoiner("*");
 
         for(Node n: args) {
             if (n instanceof Constant && n.evaluate() == 0)
@@ -96,22 +103,27 @@ public class Prod extends Node {
         }
 
         if(sign<0) b.append("-");
+
+        Constant sum = simplify();
+        String sum_str = sum.toString();
+        if(sum.value < 0)
+            sum_str = "(" + sum_str + ")";
+        joiner.add(sum_str);
+
         for(Node n: args){
-            int argSign = n.getSign();
-            boolean useBracket = false;
-            if(argSign<0)
-                useBracket = true;
-
-            String argString = n.toString();
-            if(useBracket)
-                b.append("(");
-            if(simplify(argString)) continue;
-            if(args.indexOf(n) > 0) b.append("*");
-            b.append(argString);
-            if(useBracket)
-                b.append(")");
-
+            if(!(n instanceof Constant)){
+                String argString = n.toString();
+                if(n.getSign()<0)
+                    argString = "(" + argString + ")";
+                if(!argString.equals("0") && !argString.isEmpty())
+                    joiner.add(argString);
+            }
         }
+
+        b.append(joiner.toString());
+        if(sign<0)
+            b.append(")");
+
         return b.toString();
     }
 

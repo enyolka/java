@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -6,8 +8,8 @@ import static org.junit.Assert.*;
 
 public class ListItemTest {
 
-    @org.junit.Test
-    public void writeHTML() throws Exception {
+    @Test
+    public void writeHTML() {
         String item = "Element";
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(os);

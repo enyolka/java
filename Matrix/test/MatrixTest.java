@@ -26,7 +26,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void asArray() {
+    public void testAsArray() {
         Matrix t = new Matrix(new double[][] {{1,4,6},{2,3,7}});
         double[][] tab = t.asArray();
         assertEquals(2, tab.length);
@@ -35,19 +35,19 @@ public class MatrixTest {
     }
 
     @Test
-    public void get() {
+    public void testGet() {
         Matrix t = new Matrix(new double[][] {{1,4,6},{2,3,7}});
         assertEquals(4,t.get(0,1), 0.0001);
     }
 
     @Test
-    public void set() {
+    public void testSet() {
         Matrix t = new Matrix(2,3);
         t.set(0,0,1);
         assertEquals(1,t.get(0,0), 0.00001);
     }
 
-    @Test
+    /*@Test
     public void testToString() {
         String s= "[[1.0,2.3,4.56], [12.3,  45, 21.8]]";
         s= s.replaceAll("(\\[|\\]|\\s)+","");
@@ -69,17 +69,38 @@ public class MatrixTest {
                 System.out.println(arr[i][j]);
             }
         }
+    }*/
+
+    @Test
+    public void testToString(){
+        int count_space = 0;
+        int count_left = 0;
+        int count_right = 0;
+        Matrix m = new Matrix(new double[][] {{4,6,1},{3,7,9}});
+        String s = m.toString();
+        for(int i=0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ')
+                count_space++;
+            else if (s.charAt(i) == '[')
+                count_left++;
+            else if (s.charAt(i) == ']')
+                count_right++;
+        }
+
+        assertEquals(count_space,12);
+        assertEquals(count_left,3);
+        assertEquals(count_right,3);
     }
 
 
     @Test(expected = RuntimeException.class)
-    public void reshape() {
+    public void testReshape() {
         Matrix t = new Matrix(2,3);
         t.reshape(4,2);
     }
 
     @Test
-    public void shape() {
+    public void testShape() {
         Matrix t = new Matrix(2,4);
         int[] x = t.shape();
         assertEquals(2,x[0] );
@@ -87,7 +108,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void add() {
+    public void testAdd() {
         Matrix m1 = new Matrix(new double[][] {{4,6},{3,7}});
         Matrix m2 = m1.mul(-1);
         Matrix m3 = m1.add(m2);
@@ -97,7 +118,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void sub() {
+    public void testSub() {
         Matrix m1 = new Matrix(new double[][] {{4,6},{3,7}});
         Matrix m2 = m1.sub(m1);
         for(int i=0; i<2; i++)
@@ -106,7 +127,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void mul() {
+    public void testMul() {
         Matrix m1 = new Matrix(new double[][] {{4,6},{3,7}});
         Matrix m2 = new Matrix(new double[][] {{2,2},{2,2}});
         Matrix m3 = m1.mul(m2);
@@ -116,14 +137,14 @@ public class MatrixTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void div() {
+    public void testDiv() {
         Matrix m1 = new Matrix(new double[][] {{4,6},{16,128}});
         Matrix m2 = new Matrix(new double[][] {{2,2,3},{2,2,3}});
         Matrix m3 = m1.div(m2);
     }
 
     @Test
-    public void testAdd() {
+    public void testAddCons() {
         Matrix m1 = new Matrix(new double[][] {{2,2},{2,2}});
         double x = -2;
         Matrix m2 = m1.add(x);
@@ -133,7 +154,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void testSub() {
+    public void testSubCons() {
         Matrix m1 = new Matrix(new double[][] {{2,2},{2,2}});
         double x = 2;
         Matrix m2 = m1.sub(x);
@@ -143,7 +164,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void testMul() {
+    public void testMulCons() {
         Matrix m1 = new Matrix(new double[][] {{2,2},{4,4}});
         double x = 2;
         Matrix m2 = m1.mul(x);
@@ -153,7 +174,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void testDiv() {
+    public void testDivCons() {
         Matrix m1 = new Matrix(new double[][] {{2,2},{4,4}});
         double x = 2;
         Matrix m2 = m1.div(x);
@@ -173,32 +194,32 @@ public class MatrixTest {
     }
 
     @Test
-    public void frobenius() {
+    public void testFrobenius() {
         Matrix m = new Matrix(new double[][] {{1,2},{3,4}});
         assertEquals(30,m.frobenius(), 0.0001);
     }
 
     @Test
-    public void random() {
+    public void testRandom() {
         Matrix m = Matrix.random(2,3);
         assertEquals(2,m.rows);
         assertEquals(3,m.cols);
     }
 
     @Test
-    public void eye() {
+    public void testEye() {
         Matrix m = Matrix.eye(3);
         assertEquals(3, m.frobenius(), 0.0001);
     }
 
     @Test
-    public void determinant(){
+    public void testDeterminant(){
         Matrix m = new Matrix(new double[][] {{1,2,3,6},{5,6,7,8}, {9,11,11,12}, {13,14,15,16}});
         assertEquals(32, m.determinant(), 0.0001);
     }
 
     @Test
-    public void inv(){
+    public void testInv(){
         Matrix m = new Matrix(new double[][] {{1,0,2},{2,1,0}, {1,0,1}});
         Matrix m1 = m.inv();
         Matrix m2 = new Matrix(new double[][] {{-1,0,2},{2,1,-4},{1,0,-1}});
